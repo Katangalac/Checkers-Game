@@ -83,5 +83,5 @@ class CheckersBoard:
     def print_board(self):
         for square_list in self.squares:
             for square in square_list:
-                print(str(square), end=' ')
+                square.print_square()
             print()

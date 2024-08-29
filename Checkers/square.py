@@ -34,4 +34,4 @@ class Square:
         return self.checker is None
 
     def print_square(self) -> None:
-        print(str(self))
+        print(str(self), end=' ')
