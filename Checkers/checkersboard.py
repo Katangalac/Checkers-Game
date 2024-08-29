@@ -31,6 +31,18 @@ class CheckersBoard:
         if self.is_in_bounds(row, col):
             return self.get_square_at(row, col).get_checker()
 
+    def get_legal_moves(self, row: int, col: int):
+        # TODO: Must be implemented
+        pass
+
+    def get_starting_positons(self):
+        # TODO: Must be implemented
+        pass
+
+    def get_add_if_valid(self, moves: List[Square], row: int, col: int):
+        # TODO: Must be implemented
+        pass
+
     def set_size(self, new_size: int) -> None:
         self.size = new_size
         self.initialize_squares()
@@ -59,6 +71,14 @@ class CheckersBoard:
 
     def is_in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.size and 0 <= y < self.size
+
+    def can_be_promoted(self, checker: Checker) -> bool:
+        # TODO : Must be implemented
+        pass
+
+    def can_capture(self, checker: Checker) -> bool:
+        # TODO : Must be implemented
+        pass
 
     def print_board(self):
         for square_list in self.squares:
