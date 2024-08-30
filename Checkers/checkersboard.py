@@ -1,5 +1,6 @@
-from boardsize import BoardSize
+from boardsize import *
 from typing import List
+from utils import *
 
 from checker import Checker
 from square import Square
@@ -8,17 +9,39 @@ from square import Square
 class CheckersBoard:
     def __init__(self, board_size: BoardSize):
         self.size = board_size.get_size()
-        self.squares: List[List[Square]] | None = None
+        self.squares: List[List[Square]] | None = []
+        self.checkers: List[Checker] | None = []
+        self.checker_number = board_size.get_checker_number()
         self.initialize_squares()
+        self.initialize_starting_checkers()
 
     def initialize_squares(self) -> None:
-        self.squares = [[Square(x, y) for x in range(self.size)] for y in range(self.size)]
+        self.squares = [[Square(j, i) for i in range(self.size)] for j in range(self.size)]
+
+    def initialize_starting_checkers(self) -> None:
+
+        for position_list in self.get_black_starting_positions():
+            for position in position_list:
+                x, y = decode_position(position)
+                checker = Checker(x, y, get_black_checker_color())
+                self.set_checker_at(x, y, checker)
+                self.checkers.append(checker)
+
+        for position_list in self.get_white_starting_positions():
+            for position in position_list:
+                x, y = decode_position(position)
+                checker = Checker(x, y, get_white_checker_color())
+                self.set_checker_at(x, y, checker)
+                self.checkers.append(checker)
 
     def get_size(self):
         return self.size
 
     def get_squares(self) -> List[List[Square]] | None:
         return self.squares
+
+    def get_checkers(self) -> List[Checker]:
+        return self.checkers
 
     def get_board_size(self):
         return f"{self.size}x{self.size}"
@@ -32,20 +55,50 @@ class CheckersBoard:
             return self.get_square_at(row, col).get_checker()
 
     def get_legal_moves(self, row: int, col: int):
-        # TODO: Must be implemented
-        pass
+        moves = []
+        checker = self.get_checker_at(row, col)
+        print(checker)
 
-    def get_starting_positons(self):
-        # TODO: Must be implemented
-        pass
+        if checker is not None:
+            if not checker.is_king:
+                if checker.get_color() == get_black_checker_color():
+                    self.add_if_valid(moves, checker.get_row() + 1, checker.get_col() + 1)
+                    self.add_if_valid(moves, checker.get_row() + 1, checker.get_col() - 1)
+                elif checker.get_color() == get_white_checker_color():
+                    self.add_if_valid(moves, checker.get_row() - 1, checker.get_col() - 1)
+                    self.add_if_valid(moves, checker.get_row() - 1, checker.get_col() + 1)
+            else:
+                for i in range(self.size):
+                    self.add_if_valid(moves, checker.get_row() - i, checker.get_col() - i)
+                    self.add_if_valid(moves, checker.get_row() - i, checker.get_col() + i)
+                    self.add_if_valid(moves, checker.get_row() + i, checker.get_col() - i)
+                    self.add_if_valid(moves, checker.get_row() + i, checker.get_col() + i)
 
-    def get_add_if_valid(self, moves: List[Square], row: int, col: int):
-        # TODO: Must be implemented
-        pass
+        return moves
+
+    def get_black_starting_positions(self):
+        max_line = self.checker_number / (self.size / 2)
+        positions = [[f"({j},{i})" for i in range(self.size) if j < max_line and (i + j) % 2 != 0] for j in
+                     range(self.size)]
+
+        return positions
+
+    def get_white_starting_positions(self):
+        max_line = self.checker_number / (self.size / 2)
+        positions = [[f"({self.size - j - 1},{i})" for i in range(self.size) if j < max_line and (i + j) % 2 == 0] for j in
+                     range(self.size)]
+
+        return positions
+
+    def add_if_valid(self, moves: List[str], row: int, col: int):
+        if self.is_in_bounds(row, col) and self.is_empty(row, col):
+            moves.append(f"({row},{col})")
 
     def set_size(self, new_size: int) -> None:
         self.size = new_size
+        self.checker_number = get_board_size_from(new_size)
         self.initialize_squares()
+        self.initialize_starting_checkers()
 
     def set_checker_at(self, row: int, col: int, checker: Checker):
         if self.is_in_bounds(row, col):
@@ -73,15 +126,47 @@ class CheckersBoard:
         return 0 <= x < self.size and 0 <= y < self.size
 
     def can_be_promoted(self, checker: Checker) -> bool:
-        # TODO : Must be implemented
-        pass
+        if checker.get_color() == get_black_checker_color():
+            promote_line = [f"({self.size - 1},{i})" for i in range(self.size)]
+            print(promote_line)
+            if str(checker) in promote_line:
+                return True
+            else:
+                return False
+        elif checker.get_color() == get_white_checker_color():
+            promote_line = [f"(0,{i})" for i in range(self.size)]
+            print(promote_line)
+            if str(checker) in promote_line:
+                return True
+            else:
+                return False
 
     def can_capture(self, checker: Checker) -> bool:
         # TODO : Must be implemented
         pass
 
+    def get_capture_paths(self, checker: Checker):
+        # TODO : Must be implemented
+        pass
     def print_board(self):
         for square_list in self.squares:
             for square in square_list:
                 square.print_square()
             print()
+
+    def print_black_starting_position(self):
+        for square_list in self.get_black_starting_positions():
+            for square in square_list:
+                print(square, end=' ')
+            print()
+
+    def print_white_starting_position(self):
+        for square_list in self.get_white_starting_positions():
+            for square in square_list:
+                print(square, end=' ')
+            print()
+
+    def print_legal_moves(self, row: int, col: int):
+        moves = self.get_legal_moves(row, col)
+        for move in moves:
+            print(move, end=' ')

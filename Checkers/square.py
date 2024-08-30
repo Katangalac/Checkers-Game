@@ -11,7 +11,7 @@ class Square:
         return f"[{self.row},{self.col}]"
 
     def __repr__(self):
-        return f"Square[{self.row},{self.col}]"
+        return f"Square[{self.row},{self.col}, {repr(self.checker)}]"
 
     def get_row(self) -> int:
         return self.row
