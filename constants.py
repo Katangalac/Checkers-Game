@@ -1,0 +1,6 @@
+# Constants
+WIDTH = 800
+HEIGHT = 800
+ROWS = 10
+COLS = 10
+SQUARE_SIZE = WIDTH // COLS
