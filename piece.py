@@ -4,7 +4,7 @@ from colors import *
 
 
 class Piece:
-    PADDING = 15
+    PADDING = 10
     OUTLINE = 2
 
     def __init__(self, row, col, color):
