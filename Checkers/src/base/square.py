@@ -1,4 +1,4 @@
-from checker import Checker
+from src.base.checker import Checker
 
 
 class Square:

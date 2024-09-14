@@ -1,16 +1,16 @@
-from boardsize import *
+from src.base.boardsize import *
 from typing import List
-from utils import *
+from src.base.utils import *
 
-from checker import Checker
-from square import Square
+from src.base.checker import Checker
+from src.base.square import Square
 
 
 class CheckersBoard:
     def __init__(self, board_size: BoardSize):
         self.size = board_size.get_size()
-        self.squares: List[List[Square]] | None = []
-        self.checkers: List[Checker] | None = []
+        self.squares: List[List[Square]] = []
+        self.checkers: List[Checker] = []
         self.checker_number = board_size.get_checker_number()
         self.initialize_squares()
         self.initialize_starting_checkers()
@@ -37,7 +37,7 @@ class CheckersBoard:
     def get_size(self):
         return self.size
 
-    def get_squares(self) -> List[List[Square]] | None:
+    def get_squares(self) -> List[List[Square]]:
         return self.squares
 
     def get_checkers(self) -> List[Checker]:

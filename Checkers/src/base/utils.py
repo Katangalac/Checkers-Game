@@ -1,4 +1,7 @@
 from typing import Tuple
+import os
+
+from PIL import Image, ImageTk
 
 
 def decode_position(position: str) -> Tuple[int, int]:
@@ -32,3 +35,11 @@ def get_square_on_main_diagonal(from_x, from_y, to_x, to_y):
         else:
             diagonal = [f"({from_x + i + 1},{from_y + i + 1})" for i in range(to_x - from_x - 1)]
         return diagonal
+
+
+def get_photo_from_path(image_path, size):
+    path = os.path.join(os.path.dirname(__file__), image_path)
+    image = Image.open(path)
+    image = image.resize((size, size), Image.LANCZOS)
+    photo = ImageTk.PhotoImage(image)
+    return photo
