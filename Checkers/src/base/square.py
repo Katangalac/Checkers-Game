@@ -24,8 +24,7 @@ class Square:
 
     def set_checker(self, new_checker: Checker) -> None:
         self.checker = new_checker
-        self.checker.set_row(self.row)
-        self.checker.set_col(self.col)
+        self.checker.set_position(self.row, self.col)
 
     def remove_checker(self) -> None:
         self.checker = None

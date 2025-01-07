@@ -1,4 +1,3 @@
-from src.base.boardsize import *
 from typing import List
 from src.base.utils import *
 
@@ -7,11 +6,11 @@ from src.base.square import Square
 
 
 class CheckersBoard:
-    def __init__(self, board_size: BoardSize):
-        self.size = board_size.get_size()
+    def __init__(self):
+        self.size = 10
         self.squares: List[List[Square]] = []
         self.checkers: List[Checker] = []
-        self.checker_number = board_size.get_checker_number()
+        self.checker_number = 20
         self.initialize_squares()
         self.initialize_starting_checkers()
 
@@ -106,12 +105,6 @@ class CheckersBoard:
                      range(self.size)]
 
         return positions
-
-    def set_size(self, new_size: int) -> None:
-        self.size = new_size
-        self.checker_number = get_board_size_from(new_size)
-        self.initialize_squares()
-        self.initialize_starting_checkers()
 
     def set_checker_at(self, row: int, col: int, checker: Checker):
         if self.is_in_bounds(row, col):

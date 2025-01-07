@@ -26,6 +26,10 @@ class Checker:
     def set_col(self, new_col: int) -> None:
         self.col = new_col
 
+    def set_position(self, new_row: int, new_col: int) -> None:
+        self.row = new_row
+        self.col = new_col
+
     def set_color(self, new_color) -> None:
         self.color = new_color
 
